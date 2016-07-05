@@ -17,7 +17,7 @@ struct VertexInput {
     float2 texcoord [[ attribute(SCNVertexSemanticTexcoord0) ]];
 };
 
-// フレーム定数
+// モデルデータ
 struct NodeBuffer {
     float4x4 modelViewProjectionTransform;
 };
