@@ -11,7 +11,11 @@ import QuartzCore
 import SceneKit
 
 class GameViewController: UIViewController {
-
+    
+    struct CustomBuffer {
+        var color: float4
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -76,13 +80,21 @@ class GameViewController: UIViewController {
         
         // マテリアルに設定されているテクスチャをシェーダ用に設定
         guard let contents = material.diffuse.contents else { return }
-        material.setValue(SCNMaterialProperty(contents: contents),
-                          forKey: "texture")
+        material.setValue(SCNMaterialProperty(contents: contents), forKey: "texture")
+        var custom = CustomBuffer(color: float4(0, 0, 0, 1))
+        material.setValue(NSData(bytes: &custom, length:sizeof(CustomBuffer)), forKey: "custom")
     }
     
     func handleTap(gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView
         let scnView = self.view as! SCNView
+ 
+        // タップしたら色を変える
+        let ship = scnView.scene!.rootNode.childNodeWithName("ship", recursively: true)!
+        guard let material = ship.childNodes.first?.geometry?.firstMaterial else { return }
+
+        var custom = CustomBuffer(color: float4(1, 0, 0, 1))
+        material.setValue(NSData(bytes: &custom, length:sizeof(CustomBuffer)), forKey: "custom")
         
         // check what nodes are tapped
         let p = gestureRecognize.locationInView(scnView)
