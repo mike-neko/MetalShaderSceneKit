@@ -28,7 +28,7 @@ struct CustomBuffer {
 };
 
 struct VertexOut {
-    float4 position [[position]];
+    float4 position [[ position ]];
     float2 texcoord;
     float4 color;
 };
